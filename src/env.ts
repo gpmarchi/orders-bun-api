@@ -6,6 +6,9 @@ const envSchema = z.object({
   POSTGRES_USER: z.string().trim().min(1),
   POSTGRES_PASSWORD: z.string().trim().min(1),
   POSTGRES_DB: z.string().trim().min(1),
+  DATABASE_URL: z.url({
+    protocol: /^postgresql?$/
+  }),
 })
 
 const parsedEnv = envSchema.safeParse(typeof Bun !== 'undefined' ? Bun.env : process.env)
