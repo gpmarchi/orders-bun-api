@@ -1,0 +1,16 @@
+name: orders-bun-api
+services:
+  postgres:
+    container_name: "orders-bun-api-postgres"
+    image: bitnami/postgresql:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=ordersbunapi
+    volumes:
+      - postgres_data:/bitnami/postgresql
+
+volumes:
+  postgres_data:

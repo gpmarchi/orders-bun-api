@@ -4,7 +4,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --watch src/http/server.ts",
+    "dev": "bun run services:up && bun --watch src/http/server.ts",
+    "services:up": "docker compose -f infra/compose.yml up -d",
+    "services:stop": "docker compose -f infra/compose.yml stop",
+    "services:down": "docker compose -f infra/compose.yml down",
     "build": "bun build src/http/server.ts --target=bun --outdir ./dist",
     "start": "NODE_ENV=production bun src/http/server.js",
     "test": "bun test"
