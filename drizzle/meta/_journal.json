@@ -15,6 +15,13 @@
       "when": 1770133660954,
       "tag": "0001_rapid_wildside",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770134292155,
+      "tag": "0002_broken_moondragon",
+      "breakpoints": true
     }
   ]
 }
