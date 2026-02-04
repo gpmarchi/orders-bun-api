@@ -1,4 +1,4 @@
-import z from "zod";
+import z from 'zod'
 
 const envSchema = z.object({
   POSTGRES_HOST: z.string().trim().default('localhost'),
@@ -7,19 +7,21 @@ const envSchema = z.object({
   POSTGRES_PASSWORD: z.string().trim().min(1),
   POSTGRES_DB: z.string().trim().min(1),
   DATABASE_URL: z.url({
-    protocol: /^postgresql?$/
+    protocol: /^postgresql?$/,
   }),
 })
 
-const parsedEnv = envSchema.safeParse(typeof Bun !== 'undefined' ? Bun.env : process.env)
+const parsedEnv = envSchema.safeParse(
+  typeof Bun !== 'undefined' ? Bun.env : process.env
+)
 
 if (parsedEnv.success === false) {
   console.error(
     '🔴 Invalid environment variables\n',
-    z.prettifyError(parsedEnv.error),
-  );
+    z.prettifyError(parsedEnv.error)
+  )
 
-  throw new Error();
+  throw new Error()
 }
 
-export const env = parsedEnv.data;
+export const env = parsedEnv.data

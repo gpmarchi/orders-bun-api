@@ -1,7 +1,7 @@
-import { faker } from '@faker-js/faker';
-import chalk from "chalk";
-import { db } from "./connection";
-import { restaurantsTable, usersTable } from "./schema";
+import { faker } from '@faker-js/faker'
+import chalk from 'chalk'
+import { db } from './connection'
+import { restaurantsTable, usersTable } from './schema'
 
 await db.delete(usersTable)
 await db.delete(restaurantsTable)
@@ -23,15 +23,18 @@ await db.insert(usersTable).values([
 
 console.log(chalk.yellow('✔ Customers created!'))
 
-const [ manager ] = await db.insert(usersTable).values([
-  {
-    name: faker.person.fullName(),
-    email: 'admin@admin.com',
-    role: 'manager',
-  },
-]).returning({
-  id: usersTable.id
-})
+const [manager] = await db
+  .insert(usersTable)
+  .values([
+    {
+      name: faker.person.fullName(),
+      email: 'admin@admin.com',
+      role: 'manager',
+    },
+  ])
+  .returning({
+    id: usersTable.id,
+  })
 
 console.log(chalk.yellow('✔ Manager created!'))
 

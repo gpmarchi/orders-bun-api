@@ -1,5 +1,5 @@
-import { defineConfig } from 'drizzle-kit';
-import { env } from './src/env';
+import { defineConfig } from 'drizzle-kit'
+import { env } from './src/env'
 
 export default defineConfig({
   schema: './src/database/schema/index.ts',
@@ -12,5 +12,5 @@ export default defineConfig({
     password: env.POSTGRES_PASSWORD,
     database: env.POSTGRES_DB,
     ssl: false,
-  }
-});
+  },
+})
