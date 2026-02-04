@@ -11,6 +11,8 @@ const envSchema = z.object({
       protocol: /^postgresql?$/,
     })
     .optional(),
+  API_BASE_URL: z.url().min(1),
+  AUTH_REDIRECT_URL: z.url().min(1),
 })
 
 const parsedEnv = envSchema.safeParse(
