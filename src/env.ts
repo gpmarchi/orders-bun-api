@@ -6,9 +6,11 @@ const envSchema = z.object({
   POSTGRES_USER: z.string().trim().min(1),
   POSTGRES_PASSWORD: z.string().trim().min(1),
   POSTGRES_DB: z.string().trim().min(1),
-  DATABASE_URL: z.url({
-    protocol: /^postgresql?$/,
-  }),
+  DATABASE_URL: z
+    .url({
+      protocol: /^postgresql?$/,
+    })
+    .optional(),
 })
 
 const parsedEnv = envSchema.safeParse(
@@ -24,4 +26,7 @@ if (parsedEnv.success === false) {
   throw new Error()
 }
 
-export const env = parsedEnv.data
+export const env = {
+  ...parsedEnv.data,
+  DATABASE_URL: `postgresql://${parsedEnv.data.POSTGRES_USER}:${parsedEnv.data.POSTGRES_PASSWORD}@${parsedEnv.data.POSTGRES_HOST}:${parsedEnv.data.POSTGRES_PORT}/${parsedEnv.data.POSTGRES_DB}`,
+}
