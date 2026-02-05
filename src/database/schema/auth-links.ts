@@ -8,7 +8,7 @@ export const authLinksTable = pgTable('auth_links', {
     .primaryKey(),
   code: text('code').notNull().unique(),
   userId: text('user_id')
-    .references(() => usersTable.id)
+    .references(() => usersTable.id, { onDelete: 'cascade' })
     .notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 })
