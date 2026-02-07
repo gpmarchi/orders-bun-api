@@ -1,4 +1,4 @@
-import { and, count, eq, getTableColumns, ilike } from 'drizzle-orm'
+import { and, count, desc, eq, ilike, sql } from 'drizzle-orm'
 import { createSelectSchema } from 'drizzle-zod'
 import Elysia from 'elysia'
 import z from 'zod'
@@ -21,10 +21,16 @@ export const getOrders = new Elysia().use(auth).get(
       throw new UnauthorizedError()
     }
 
-    const orderTableColumns = getTableColumns(ordersTable)
+    // const orderTableColumns = getTableColumns(ordersTable)
 
     const baseQuery = db
-      .select(orderTableColumns)
+      .select({
+        orderId: ordersTable.id,
+        createdAt: ordersTable.createdAt,
+        status: ordersTable.status,
+        total: ordersTable.totalInCents,
+        customerName: usersTable.name,
+      })
       .from(ordersTable)
       .innerJoin(usersTable, eq(usersTable.id, ordersTable.customerId))
       .where(
@@ -42,7 +48,19 @@ export const getOrders = new Elysia().use(auth).get(
         .select()
         .from(baseQuery.as('baseQuery'))
         .offset(pageIndex * 10)
-        .limit(10),
+        .limit(10)
+        .orderBy(fields => {
+          return [
+            sql`CASE ${fields.status}
+              WHEN 'pending' THEN 1
+              WHEN 'processing' THEN 2
+              WHEN 'delivering' THEN 3
+              WHEN 'delivered' THEN 4
+              WHEN 'canceled' THEN 99
+            END`,
+            desc(fields.createdAt),
+          ]
+        }),
     ])
 
     const totalOrders = totalOrdersQuery[0]?.count
