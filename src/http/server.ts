@@ -30,6 +30,8 @@ const app = new Elysia()
       case 'VALIDATION':
         set.status = error.status
         return error.toResponse()
+      case 'NOT_FOUND':
+        return new Response(null, { status: 404 })
       default:
         // TODO: check why this log is not being printed to the console and the
         // error being directly returned to the client
