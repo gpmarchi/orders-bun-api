@@ -4,6 +4,7 @@ import { authenticateFromLink } from './routes/authenticate-from-link'
 import { cancelOrder } from './routes/cancel-order'
 import { deliverOrder } from './routes/deliver-order'
 import { dispatchOrder } from './routes/dispatch-order'
+import { getDailyRevenueFromPeriod } from './routes/get-daily-revenue-from-period'
 import { getDayTotalOrdersAmount } from './routes/get-day-total-orders-amount'
 import { getManagedRestaurant } from './routes/get-managed-restaurant'
 import { getMonthlyCanceledOrdersAmount } from './routes/get-monthly-canceled-orders-amount'
@@ -35,6 +36,7 @@ const app = new Elysia()
   .use(getMonthlyOrdersAmount)
   .use(getMonthlyCanceledOrdersAmount)
   .use(getPopularProducts)
+  .use(getDailyRevenueFromPeriod)
   .onError(({ code, error, set }) => {
     switch (code) {
       case 'VALIDATION':
