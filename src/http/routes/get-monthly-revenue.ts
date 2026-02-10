@@ -1,14 +1,13 @@
 import dayjs from 'dayjs'
 import { and, eq, gte, sql, sum } from 'drizzle-orm'
-import Elysia from 'elysia'
+import type Elysia from 'elysia'
 import { db } from '../../database/connection'
 import { ordersTable } from '../../database/schema'
 import { auth } from '../auth'
 import { UnauthorizedError } from '../errors/unauthorized-error'
 
-export const getMonthlyRevenue = new Elysia()
-  .use(auth)
-  .get('/metrics/monthly-revenue', async ({ getLoggedInUser }) => {
+export const getMonthlyRevenue = (app: Elysia) => {
+  app.use(auth).get('/metrics/monthly-revenue', async ({ getLoggedInUser }) => {
     const { restaurantId } = await getLoggedInUser()
 
     if (!restaurantId) {
@@ -56,3 +55,4 @@ export const getMonthlyRevenue = new Elysia()
         : 0,
     }
   })
+}

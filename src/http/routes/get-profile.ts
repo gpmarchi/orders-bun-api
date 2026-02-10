@@ -1,11 +1,10 @@
-import Elysia from 'elysia'
+import type Elysia from 'elysia'
 import { db } from '../../database/connection'
 import { auth } from '../auth'
 import { UnauthorizedError } from '../errors/unauthorized-error'
 
-export const getProfile = new Elysia()
-  .use(auth)
-  .get('/me', async ({ getLoggedInUser }) => {
+export const getProfile = (app: Elysia) => {
+  app.use(auth).get('/me', async ({ getLoggedInUser }) => {
     const { userId } = await getLoggedInUser()
 
     const user = await db.query.usersTable.findFirst({
@@ -20,3 +19,4 @@ export const getProfile = new Elysia()
 
     return user
   })
+}

@@ -19,38 +19,38 @@ import { sendAuthLink } from './routes/send-auth-link'
 import { signOut } from './routes/sign-out'
 
 const app = new Elysia()
-  .use(registerRestaurant)
-  .use(sendAuthLink)
-  .use(authenticateFromLink)
-  .use(signOut)
-  .use(getProfile)
-  .use(getManagedRestaurant)
-  .use(getOrderDetails)
-  .use(approveOrder)
-  .use(cancelOrder)
-  .use(deliverOrder)
-  .use(dispatchOrder)
-  .use(getOrders)
-  .use(getMonthlyRevenue)
-  .use(getDayTotalOrdersAmount)
-  .use(getMonthlyOrdersAmount)
-  .use(getMonthlyCanceledOrdersAmount)
-  .use(getPopularProducts)
-  .use(getDailyRevenueFromPeriod)
-  .onError(({ code, error, set }) => {
-    switch (code) {
-      case 'VALIDATION':
-        set.status = error.status
-        return error.toResponse()
-      case 'NOT_FOUND':
-        return new Response(null, { status: 404 })
-      default:
-        // TODO: check why this log is not being printed to the console and the
-        // error being directly returned to the client
-        console.error(error)
-        return new Response(null, { status: 500 })
-    }
-  })
+
+app.onError(({ code, error, set }) => {
+  switch (code) {
+    case 'VALIDATION':
+      set.status = error.status
+      return error.toResponse()
+    case 'NOT_FOUND':
+      return new Response(null, { status: 404 })
+    default:
+      console.error(error)
+      return new Response(null, { status: 500 })
+  }
+})
+
+registerRestaurant(app)
+sendAuthLink(app)
+authenticateFromLink(app)
+signOut(app)
+getProfile(app)
+getManagedRestaurant(app)
+getOrderDetails(app)
+approveOrder(app)
+cancelOrder(app)
+deliverOrder(app)
+dispatchOrder(app)
+getOrders(app)
+getMonthlyRevenue(app)
+getDayTotalOrdersAmount(app)
+getMonthlyOrdersAmount(app)
+getMonthlyCanceledOrdersAmount(app)
+getPopularProducts(app)
+getDailyRevenueFromPeriod(app)
 
 app.listen(3333, () => {
   console.log('🔥 HTTP server running!')
